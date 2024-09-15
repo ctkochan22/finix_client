@@ -1,6 +1,6 @@
 // You will need to import FinixClient
 const { Environment, Models, Client } = require('@finix-payments/finix');
-const { FinixClient, OnboardingMerchant } = require('../index');
+const { FinixClient, OnboardingMerchant, Merchant } = require('../index');
 const keys = require('../config/keys.dev');
 const testData = require('./testData');
 
@@ -9,15 +9,48 @@ const testData = require('./testData');
 FinixClient.initialize(keys.FINIX_USER, keys.FINIX_PASS, Environment.Sandbox);
 
 // You can instantiate OnboardingMerchant with data pulled from your db
-const onboardingMerchant = new OnboardingMerchant(testData);
+const onboardingMerchant = new OnboardingMerchant(testData.sellerData);
+const merchant = new Merchant(testData.buyerData);
 
-async function test() {
+// Onboarding Example
+async function testOnboarding() {
     try {
         response = await onboardingMerchant.fullyOnboardMerchant();
-        console.log(response);
+        return response;
     } catch (err) {
+        // Catch and handle error
         console.log(err);
     }
 }
 
-test();
+// This example tests creating a buyer and charging the card
+// Must include merchantId
+async function testMerchant(merchantId) {
+    merchant.setMerchant(merchantId);
+    
+    try {
+        await merchant.fullyCreateCharge({
+                amount: 2200,
+                currency: "USD",
+        })
+    } catch (err) {
+        // Catch and handle error
+        console.log(err);
+    }
+}
+
+async function testOnboardingAndCharge() {
+    const response = await testOnboarding();
+    console.log("Creating charge against merchant: ", response);
+
+    // Verifying, even on sandbox, takes a moment
+    console.log("Delaying charge 8 seconds to let merchant get verified");
+    setTimeout(() => {
+        testMerchant(response.merchantId);
+    }, 8000);
+}
+
+testOnboarding();
+// testOnboardingAndCharge();
+// testMerchant('MUozGwaZzjydUUn64hY2fe3N');
+

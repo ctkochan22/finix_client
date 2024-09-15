@@ -1,4 +1,4 @@
-module.exports = {
+const sellerData = {
     // Underwriting data
     merchantAgreementAccepted: true,
     merchantAgreementIpAddress: "42.1.1.113",
@@ -57,6 +57,7 @@ module.exports = {
     country: "USA",
     currency: "USD",
     paymentInstrumentType: "BankAccount",
+    name: "old yeller",
 
     // Additional fields not used in the provided methods but might be needed
     identityRoles: ["SELLER"],
@@ -64,3 +65,25 @@ module.exports = {
     achMaxTransactionAmount: 100000,
     hasAcceptedCreditCardsPreviously: true
 };
+
+const buyerData = {
+    email: "generic@gmail.com",
+    firstName: "steven",
+    lastName: "tom",
+    personalAddress: {
+        postalCode: "94127"
+    },
+
+    expirationMonth: 12,
+    expirationYear: 2029,
+    name: "steven tom",
+    number: "5200828282828210",
+    securityCode: "022",
+    paymentInstrumentType: "PaymentCard",
+    extra: "unused",
+
+    // INSERT YOUR OWN MERCHANT ID FOR TESTS TO WORK
+    merchantId: 'MUozGwaZzjydUUn64hY2fe3N',
+}
+
+module.exports = {sellerData, buyerData}
