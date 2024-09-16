@@ -24,3 +24,8 @@ Other notes:
 - This class will validate that all the correct data are present in each step
 - Filter data that the class in instatiated with, filtering out unwanted data
 - Throw custom errors so you can handle various error cases
+
+### If I had more time...
+- Add more tests, this currently only tests the Merchant class
+- Privatize instance variables and add setter methods - currently we have filtering methods, but they are no use if the instance variables are exposed. I would privatize them and only expose them via setter methods (`SetEntityData`). That way the setter method can use the filter methods I've written and really protect the instance variable data.
+
